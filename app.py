@@ -1,4 +1,5 @@
 from flask import Flask, json
+from random import choice
 
 app = Flask(__name__)
 json.provider.DefaultJSONProvider.ensure_ascii = False
@@ -45,15 +46,25 @@ def about_author():
 
 
 
-@app.route("/quotes/<int:quote_id>")
+@app.route("/quotes/<int:quote_id>")    # Данная функция выполняется по Заданию-2
 def get_quote(quote_id):
     for quote in quotes:
         if quote["id"]==quote_id:
             return quote
-        else:
-            return f"Quote with id={quote_id} not found", 404
 
-@app.route("/quotes/count")
+    return f"Quote with id={quote_id} not found", 404
+
+
+@app.route("/quotes/homework/<int:quote_id>")   # Данная функция выполняется по Заданию-4*
+def get_quote_by_id(quote_id):
+    for quote in quotes:
+        if quote["id"]==quote_id:
+            quot=choice(quotes)
+            return quot["text"]
+    return f"Quote with id={quote_id} not found", 404
+
+
+@app.route("/quotes/count")    # Данная функция выполняется по Заданию-3
 def quotes_count():
     return {
         "count": len(quotes)
